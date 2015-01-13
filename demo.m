@@ -8,9 +8,12 @@ INPUT_SIZE = 64;
 HIDDEN_SIZE = 25;
 net.layer(2).func = 'sigmoid';
 net.layer(2).size = HIDDEN_SIZE;
+net.layer(2).reg = 'L2';
 net.layer(3).func = 'sigmoid';
 net.layer(3).size = INPUT_SIZE;
+net.layer(3).reg = 'L2';
 net.cost = 'L2Regression';
+net.lambda = 0.01; % Weight regularization parameter
 
 % Inputs and outputs
 load('data/IMAGES.mat'); % Load images
@@ -35,7 +38,7 @@ y = X; % Target is reconstructing data
 
 % Gradient descent
 options.Method = 'lbfgs'; % Optimisation function
-options.maxIter = 100; % Maximum number of iterations
+options.maxIter = 5; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
 
