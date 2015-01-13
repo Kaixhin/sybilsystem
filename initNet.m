@@ -13,6 +13,7 @@ function [net theta] = initNet(net, inDim, outDim)
   for l = 2:L
     r = sqrt(6) / sqrt(net.layer(l).size + net.layer(l-1).size); % Choose weights uniformly from the interval [-r, r]
     net.layer(l-1).W = rand([net.layer(l).size net.layer(l-1).size]) * 2 * r - r; % Weights
-    theta = [theta; net.layer(l-1).W(:)];
+    net.layer(l-1).b = zeros(net.layer(l).size, 1); % Biases
+    theta = [theta; net.layer(l-1).W(:); net.layer(l-1).b];
   end
 end
