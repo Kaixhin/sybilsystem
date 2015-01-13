@@ -1,9 +1,3 @@
-% Sort paths
-clear
-addpath minFunc/
-addpath layers/
-DEBUG = false;
-
 % Specify network
 INPUT_SIZE = 64;
 HIDDEN_SIZE = 25;
@@ -54,7 +48,7 @@ end
 
 % Gradient descent
 options.Method = 'lbfgs'; % Optimisation function
-options.maxIter = 100; % Maximum number of iterations
+options.maxIter = 400; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
 
