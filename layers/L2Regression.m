@@ -1,4 +1,4 @@
-function [h, cost] = L2Regression(h, y)
+function cost = L2Regression(h, y)
   % L2Regression Calculates half squared error cost
   % h:    Hypothesis
   % y:    Target
