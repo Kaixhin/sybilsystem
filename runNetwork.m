@@ -19,6 +19,7 @@ function [cost, grad, h] = runNetwork(net, X, y, theta)
   end
   
   % Forward propagation
+  net.layer(1).a = X; % Input activation
   for l = 2:L-1
     net.layer(l).z = net.layer(l-1).W * net.layer(l-1).a; % Weighted inputs
     fn = str2func(net.layer(l).func); % Layer function
