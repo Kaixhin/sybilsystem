@@ -54,7 +54,7 @@ end
 
 % Gradient descent
 options.Method = 'lbfgs'; % Optimisation function
-options.maxIter = 400; % Maximum number of iterations
+options.maxIter = 100; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
 

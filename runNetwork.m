@@ -46,8 +46,14 @@ function [cost, grad, h] = runNetwork(net, X, y, theta)
   % Backward propagation
   grad = [];
   costFnD = str2func(strcat(net.cost, 'D'));
+  net.layer(L).delta = costFnD(h, y); % Cost error
+  if isfield(net.layer(L), 'rho') && isscalar(net.layer(L).rho)
+    rho = net.layer(L).rho; % Sparsity parameter
+    rhoHat = net.layer(L).rhoHat; % Average activations
+    net.layer(L).delta = net.layer(L).delta + repmat(net.beta*(-(rho./rhoHat) + ((1 - rho)./(1 - rhoHat))), [1 m]); % Sparsity derivative
+  end  
   fnD = str2func(strcat(net.layer(l).func, 'D'));
-  net.layer(L).delta = costFnD(h, y) .* fnD(net.layer(L).z); % Cost + final layer error
+  net.layer(L).delta = net.layer(L).delta .* fnD(net.layer(L).z); % Error due to weighted inputs
   for l = L-1:-1:2
     net.layer(l).delta = net.layer(l).W' * net.layer(l+1).delta; % Error from outputs
     if isfield(net.layer(l), 'rho') && isscalar(net.layer(l).rho)
