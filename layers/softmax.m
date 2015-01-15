@@ -1,11 +1,7 @@
-function [condProb, cost] = softmax(h, g)
+function condProb = softmax(z)
   % SOFTMAX Calculates the softmax (normalized exponential) function
-  % h:        Input
-  % g:        Ground truth
+  % z:        Input
   % condProb: Conditional probabilities
-  % cost:     Cost
-  condProb = exp(bsxfun(@minus, h, max(h, [], 1))); % Prevent overflow
+  condProb = exp(bsxfun(@minus, z, max(z, [], 1))); % Prevent overflow
   condProb = bsxfun(@rdivide, condProb, sum(condProb)); % Normalise for probabilities
-  m = size(h, 2);
-  cost = -(1/m) * sum(sum(g .* log(h)));
 end

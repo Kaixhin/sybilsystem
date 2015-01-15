@@ -1,6 +1,6 @@
-function sigm = sigmoid(x)
+function sigm = sigmoid(z)
   % SIGMOID Calculates the sigmoid function
-  % x:    Input
+  % z:    Input
   % sigm: Sigmoid of input
-  sigm = 1 ./ (1 + exp(-x));
+  sigm = 1 ./ (1 + exp(-z));
 end

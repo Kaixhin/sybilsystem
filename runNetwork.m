@@ -40,13 +40,13 @@ function [cost, grad, h] = runNetwork(net, X, y, theta)
     end
   end
   h = net.layer(L).a; % Hypothesis
-  costFn = str2func(net.cost);
-  cost = cost + costFn(h, y); % Cost
+  lossFn = str2func(net.loss); % Loss function
+  cost = cost + lossFn(h, y); % Loss cost
   
   % Backward propagation
   grad = [];
-  costFnD = str2func(strcat(net.cost, 'D'));
-  net.layer(L).delta = costFnD(h, y); % Cost error
+  lossFnD = str2func(strcat(net.loss, 'D'));
+  net.layer(L).delta = lossFnD(h, y); % Loss cost error
   if isfield(net.layer(L), 'rho') && isscalar(net.layer(L).rho)
     rho = net.layer(L).rho; % Sparsity parameter
     rhoHat = net.layer(L).rhoHat; % Average activations

@@ -1,7 +1,6 @@
-function costD = softmaxD(h, g)
-  % SOFTMAXD Calculates derivative of softmax cost
-  % h:      Hypothesis
-  % g:      Ground truth
-  % costD:  Cost derivative
-  costD = -(g - h);
+function softD = softmaxD(z)
+  % SOFTMAXD Calculates the derivative of the softmax function
+  % z:      Input
+  % softD:  Derivative of softmax
+  softD = z; % TODO!!!
 end

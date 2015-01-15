@@ -1,7 +1,7 @@
-function sigmD = sigmoidD(x)
+function sigmD = sigmoidD(z)
   % SIGMOIDD Calculates the derivative of the sigmoid function
-  % x:    Input
+  % z:    Input
   % sigm: Derivative of sigmoid of input
-  sigm = 1 ./ (1 + exp(-x));
+  sigm = 1 ./ (1 + exp(-z));
   sigmD = sigm .* (1 - sigm);
 end

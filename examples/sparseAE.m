@@ -1,4 +1,4 @@
-% Specify network
+% Specify sparse autoencoder
 PATCH_SIZE = 28; % 28x28 image patches
 INPUT_SIZE = PATCH_SIZE * PATCH_SIZE;
 HIDDEN_SIZE = 196;
@@ -9,7 +9,7 @@ net.layer(2).rho = 0.1; % Sparsity parameter
 net.layer(3).func = 'sigmoid';
 net.layer(3).size = INPUT_SIZE;
 net.layer(3).reg = 'L2';
-net.cost = 'L2Regression';
+net.loss = 'squared';
 net.lambda = 3e-3; % Weight regularization parameter
 net.beta = 3; % Sparsity penalty
 
@@ -34,7 +34,7 @@ if DEBUG
   end
 end
 
-% Gradient descent
+% Train network
 options.Method = 'lbfgs'; % Optimisation function
 options.maxIter = 400; % Maximum number of iterations
 options.display = 'on';
