@@ -2,17 +2,22 @@
 PATCH_SIZE = 28; % 28x28 image patches
 INPUT_SIZE = PATCH_SIZE * PATCH_SIZE;
 NUM_CLASSES = 10;
-net.layer(2).func = 'softmax';
-net.layer(2).size = NUM_CLASSES;
+clear net
+net.layer(2).func = 'sigmoid';
+net.layer(2).size = 50;
 net.layer(2).reg = 'L2';
+net.layer(3).func = 'sigmoid';
+net.layer(3).size = 30;
+net.layer(3).reg = 'L2';
+net.layer(4).func = 'softmax';
+net.layer(4).size = NUM_CLASSES;
+net.layer(4).reg = 'L2';
 net.loss = 'logistic';
 net.lambda = 1e-4; % Weight regularization parameter
 
 % Inputs and outputs
 X = loadMNISTImages('data/train-images.idx3-ubyte');
-%X = X(:, 1:10000);
 y = loadMNISTLabels('data/train-labels.idx1-ubyte');
-%y = y(1:10000, :);
 y(y == 0) = 10; % Remap 0 to 10
 
 % Initialize network
@@ -33,7 +38,7 @@ end
 
 % Train network
 options.Method = 'lbfgs'; % Optimisation function
-options.maxIter = 100; % Maximum number of iterations
+options.maxIter = 400; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
 

@@ -2,6 +2,7 @@
 PATCH_SIZE = 28; % 28x28 image patches
 INPUT_SIZE = PATCH_SIZE * PATCH_SIZE;
 HIDDEN_SIZE = 196;
+clear net
 net.layer(2).func = 'sigmoid';
 net.layer(2).size = HIDDEN_SIZE;
 net.layer(2).reg = 'L2';
