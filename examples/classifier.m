@@ -10,7 +10,9 @@ net.lambda = 1e-4; % Weight regularization parameter
 
 % Inputs and outputs
 X = loadMNISTImages('data/train-images.idx3-ubyte');
+%X = X(:, 1:10000);
 y = loadMNISTLabels('data/train-labels.idx1-ubyte');
+%y = y(1:10000, :);
 y(y == 0) = 10; % Remap 0 to 10
 
 % Initialize network
@@ -31,7 +33,7 @@ end
 
 % Train network
 options.Method = 'lbfgs'; % Optimisation function
-options.maxIter = 10; % Maximum number of iterations
+options.maxIter = 100; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
 
@@ -40,6 +42,6 @@ XTest = loadMNISTImages('data/t10k-images.idx3-ubyte');
 yTest = loadMNISTLabels('data/t10k-labels.idx1-ubyte');
 yTest(yTest == 0) = 10; % Remap 0 to 10
 [~, ~, h] = runNetwork(net, XTest, yTest, optTheta); % TODO Split forward and backward passes
-pred = max(h); % Get softmax predictions assuming labels start at 1
+[~ ,pred] = max(h); % Get softmax predictions assuming labels start at 1
 acc = mean(yTest(:) == pred(:));
 fprintf('Accuracy: %0.3f%%\n', acc * 100);
