@@ -9,7 +9,7 @@ function [cost, grad, h] = runNetwork(net, X, y, theta)
   % h:      Hypothesis
   L = length(net.layer);
   m = size(X, 2);
-  
+
   % Set network parameters
   prevWbLength = 0;
   for l = 2:L

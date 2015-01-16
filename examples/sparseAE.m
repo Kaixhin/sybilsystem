@@ -19,7 +19,7 @@ X = IMAGES(:, 1:10000);
 y = X; % Target is reconstructing data
 
 % Initialize network
-[net theta] = initNet(net, size(X, 1), size(y, 1));
+[net theta] = initNet(net, X, y);
 
 % Check derivatives
 if DEBUG

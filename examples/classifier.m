@@ -14,7 +14,7 @@ y = loadMNISTLabels('data/train-labels.idx1-ubyte');
 y(y == 0) = 10; % Remap 0 to 10
 
 % Initialize network
-[net theta] = initNet(net, size(X, 1), size(y, 1));
+[net theta] = initNet(net, X, y);
 
 % Check derivatives
 if DEBUG
@@ -31,7 +31,7 @@ end
 
 % Train network
 options.Method = 'lbfgs'; % Optimisation function
-options.maxIter = 100; % Maximum number of iterations
+options.maxIter = 10; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
 

@@ -1,13 +1,18 @@
-function [net theta] = initNet(net, inDim, outDim)
+function [net theta] = initNet(net, X, y)
   % INITNET Initialize network
   % net:    Network
-  % inDim:  Input dimension
-  % outDim: Output dimension
+  % X:      Input 
+  % y:      Target
   % theta:  Network parameters
   
   L = length(net.layer);
-  net.layer(1).size = inDim; % Input layer
-  net.layer(L).size = outDim; % Output layer
+  net.layer(1).size = size(X, 1); % Input layer
+  if strcmp(net.loss, 'logistic') || strcmp(net.loss, 'hinge')
+    net.layer(L).size = max(y); % Output layer with target as labels
+  else
+    net.layer(L).size = size(y, 1); % Output layer matching target
+  end
+    
 
   theta = [];
   for l = 2:L
