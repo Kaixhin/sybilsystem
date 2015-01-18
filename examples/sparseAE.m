@@ -36,10 +36,16 @@ if DEBUG
 end
 
 % Train network
+options.maxIter = 400;
+options.display = true;
+[optTheta, cost] = gradientDescent(@(p) runNetwork(net, X, y, p), theta, options);
+
+%{
 options.Method = 'lbfgs'; % Optimisation function
 options.maxIter = 400; % Maximum number of iterations
 options.display = 'on';
 [optTheta, cost] = minFunc(@(p) runNetwork(net, X, y, p), theta, options);
+%}
 
 W1 = reshape(optTheta(1:HIDDEN_SIZE*INPUT_SIZE), HIDDEN_SIZE, INPUT_SIZE);
 display_network(W1', 12);
