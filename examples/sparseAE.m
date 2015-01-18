@@ -15,7 +15,7 @@ net.lambda = 3e-3; % Weight regularization parameter
 net.beta = 3; % Sparsity penalty
 
 % Inputs and outputs
-IMAGES = loadMNISTImages('data/train-images.idx3-ubyte');
+IMAGES = loadMNISTImages(['data' filesep 'train-images.idx3-ubyte']);
 X = IMAGES(:, 1:10000);
 y = X; % Target is reconstructing data
 
