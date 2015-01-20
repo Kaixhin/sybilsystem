@@ -39,7 +39,7 @@ end
 options.maxIter = 400;
 options.display = true;
 options.plot = false;
-options.method = 'adagrad';
+options.method = 'adadelta';
 [optTheta, cost] = gradientDescent(@(p) runNetwork(net, X, y, p), theta, options);
 
 %{

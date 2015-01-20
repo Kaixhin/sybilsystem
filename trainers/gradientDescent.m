@@ -5,17 +5,18 @@ function [optTheta, cost] = gradientDescent(fn, theta, options)
   % options:  Options
   % optTheta: Optimised parameters
   % cost:     Final cost
+  tic
 
   % Parameters
-  alpha = 0.01; % Learning rate
-  %v = zeros(size(theta)); % Momentum
-  %gamma = 0; % Momentum parameter
+  alpha = 0.8; % Learning rate
+  gamma = 0.9; % Momentum parameter
+  gradHist = zeros(size(theta)); % Adaptive historical gradient
   epsilon = 1e-6; % Constant for numerical stability
-  gradHist = zeros(size(theta)); % Adaptive historical gradient  
-  gamma = 0.9; % Decay paramter for moving average
-  s = zeros(size(theta)); % AdaDelta state
+  rho = 0.95; % Decay rate for moving average
+  deltaHist = zeros(size(theta)); % AdaDelta history
+  thetaHist = theta; % Past state for convergence check
   % Options
-  method = 'adagrad'; % Default method
+  method = 'adadelta'; % Default method (sgd/nesterov/adagrad/adadelta)
   if (isfield(options, 'methods'))
     method = options.method;
   end
@@ -38,64 +39,43 @@ function [optTheta, cost] = gradientDescent(fn, theta, options)
   
   for n = 1:maxIter
     [cost, grad] = fn(theta);
-    if strcmp(method, 'adagrad') % Adapt gradient for rare features
-      gradHist = gradHist + grad.^2;
-      adjGrad = grad./(sqrt(gradHist) + epsilon);
-      theta = theta - alpha*adjGrad;
-    elseif strcmp(method, 'adadelta')
-      gradHist = (1 - gamma) * grad.^2 + gamma*gradHist;
-      adjGrad = -alpha*(sqrt(s + epsilon)./sqrt(gradHist + epsilon)) .* grad;
+    if strcmp(method, 'sgd') % Gradient descent with momentum
+      adjGrad = gamma*gradHist - alpha*grad;
+      gradHist = adjGrad;
       theta = theta + adjGrad;
-      s = (1 - gamma) * adjGrad.^2 + gamma*s;
+    elseif strcmp(method, 'nesterov') % Nesterov accelerated gradient TODO Check implementation
+      adjGrad = gradHist;
+      gradHist = gamma*gradHist + alpha*grad;
+      adjGrad = gamma*adjGrad - (1 - gamma)*gradHist;
+      theta = theta + adjGrad;
+    elseif strcmp(method, 'adagrad') % Adapt gradient for rare features
+      gradHist = gradHist + grad.^2;
+      adjGrad = -alpha * grad./(sqrt(gradHist) + epsilon);
+      theta = theta + adjGrad;
+    elseif strcmp(method, 'adadelta') % Adapt gradient per dimension
+      gradHist = (1 - rho)*grad.^2 + rho*gradHist;
+      adjGrad = -alpha * (sqrt(deltaHist + epsilon)./sqrt(gradHist + epsilon)) .* grad;
+      theta = theta + adjGrad;
+      deltaHist = (1 - rho)*adjGrad.^2 + rho*deltaHist;
     end
        
     if (dispCost)
-      disp(cost);
+      fprintf('Iteration: %d\t\t\tCost: %f\n', n, cost);
     end
     if (dispPlot)
       plot(n, cost, 'k.')
       pause(0.01)
     end
-  end  
     
-  %{
-  Momentum
-  for n = 1:maxIter
-    v = gamma*v + alpha*grad;
-    theta = theta - v;
-    [cost, grad] = fn(theta);    
-    if (options.display)
-      disp(cost);
-    end
-  end
-  
-  v = gamma*v + alpha*grad;
-  optTheta = theta - v;
-  %}
-  
-  % AdaDelta
-  %{
-  g = zeros(size(theta));
-  s = zeros(size(theta));
-  for n = 1:maxIter
-    [cost, grad] = fn(theta);
-    g = (1 - gamma) * grad.^2 + gamma*g;
-    deltaTheta = -alpha*(sqrt(s + epsilon)./sqrt(g + epsilon)) .* grad;
-    theta = theta + deltaTheta;
-    s = (1 - gamma) * deltaTheta.^2 + gamma*s;
-    if (options.display)
-      disp(cost);
-    end
-    if (options.plot)
-      plot(n, cost, 'k.')
-      pause(0.01)
-    end
-  end
-  %}
-  
-  if (dispPlot)
-    hold off
-  end
-  
+    if (mod(n, 10) == 0) % Check for convergence every 10 iterations
+      if (norm(theta - thetaHist) < epsilon)
+        break
+      else
+        thetaHist = theta;
+      end
+    end   
+  end  
+
   optTheta = theta;
+  toc
 end
