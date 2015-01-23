@@ -15,6 +15,7 @@ function [optTheta, cost] = gradientDescent(fn, theta, options)
   rho = 0.95; % Decay rate for moving average
   deltaHist = zeros(size(theta)); % AdaDelta history
   thetaHist = theta; % Past state for convergence check
+  % TODO Add gradient clipping for gradient cliffs (esp. for RNNs)
   % Options
   method = 'adadelta'; % Default method (sgd/nesterov/adagrad/adadelta)
   if (isfield(options, 'methods'))
