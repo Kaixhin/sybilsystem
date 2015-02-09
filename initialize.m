@@ -1,5 +1,6 @@
 % Initialize library
 clear
+addpath Graph
 addpath minFunc
 addpath layers
 addpath losses

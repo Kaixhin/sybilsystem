@@ -14,40 +14,11 @@ Recursive Neural Networks can therefore be seen as the generalised version of un
 To clarify this abstraction, a neural network is a graph, a layer is a node and a connection is an edge.
 
 ## Usage
-nn = new NeuralNetwork()
-a = nn.addLayer(84, 'sigmoid')
-b = nn.addLayer(10, 'softmax')
-a.connectsTo(b)
-a.connectedTo
--> [b]
-b.connectedFrom
--> [a]
+nn = NeuralNetwork();
+nn.addLayer('a', struct('Function', 'sigmoid', 'Size', 84, 'Reg', 'L2', 'Rho', 0.1))
+nn.addLayer('b', struct('Function', 'softmax', 'Size', 10, 'Reg', 'L2'))
+nn.connect('a', 'b')
+nn.connect('a', 'a')
+nn.connect('b', 'a')
 nn.initialize()
-nn.order
--> [a b]
-
-## Documentation
-### NeuralNetwork
-- Constructor()
--- Creates an empty neural network.
-- order
--- The topological order of the network. Needs to be calculated after all layers and connections are added.
-- addLayer(Int n, String act)
--- Adds a size n layer with activation function act.
-- initialize()
--- Adds initial weight matrices to all the layers and calls topologicalSort().
-- topologicalSort()
--- Performs a topological sort on the network, storing the order in order.
-- setParams(Double[] theta)
--- Sets the network weights (and biases) from theta.
-- forwardProp(Double[][] x, *Int/Double[][] y*)
-- Performs forward propagation with input x and returns the network output. If provided with target y returns the cost as well.
-- backProp(Double[][] x, *Int/Double[][] y*)
-- Performs backpropagation with respect to input x and target y.
-### Layer
-- connectedTo
--- A list of layers that the current layer has a directed edge to.
-- connectedFrom
--- A list of layers that the current layer has a directed edge from.
-- connectsTo(Layer l)
--- Creates a directed connection from the layer to layer l.
+nn
