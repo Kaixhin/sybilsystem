@@ -5,6 +5,7 @@ classdef NeuralNetwork < handle
     Order = {}
     UnmarkedNodes = {} % Cell of unmarked nodes
     Loss = '' % TODO Accommodate losses anywhere
+    Cost = 0 % Cumulative cost from losses and regularization
     Lambda = 0 % TODO Specify L2 parameter by layer
   end
   methods (Static)
@@ -80,7 +81,7 @@ classdef NeuralNetwork < handle
     % Calculate network hypothesis
     function h = forwardProp(this, X)
       m = size(X, 2);
-      %cost = 0;
+      this.Cost = 0; % Reset cost
       this.Layers.(this.Order{1}).a = X; % Input activation
       % TODO Don't assume first layer is input and everything is a unary tree
       for l = 2:length(this.Order)
@@ -89,10 +90,10 @@ classdef NeuralNetwork < handle
         currLayer.z = prevLayer.W * prevLayer.a + repmat(prevLayer.b, [1 m]); % Weighted inputs + biases
         fn = str2func(currLayer.Function); % Layer function
         currLayer.a = fn(currLayer.z); % Activation
-        %{
-        if isfield(net.layer(l), 'reg') && strcmp(net.layer(l).reg, 'L2')
-          cost = cost + (net.lambda/2) * sum(sum(net.layer(l-1).W.^2)); % L2 weight regularization cost
+        if isprop(currLayer, 'Reg') && strcmp(currLayer.Reg, 'L2')
+          this.Cost = this.Cost + (this.Lambda/2) * sum(sum(prevLayer.W.^2)); % L2 weight regularization cost
         end
+        %{
         if isfield(net.layer(l), 'rho') && isscalar(net.layer(l).rho)
           rho = net.layer(l).rho; % Sparsity parameter
           rhoHat = (1/m) * sum(net.layer(l).a, 2); % Average activations
@@ -106,11 +107,10 @@ classdef NeuralNetwork < handle
     end
     
     % Calculate cost and gradient given the target output
-    function [cost, grad] = backProp(this, h, y)
+    function grad = backProp(this, h, y)
       m = size(h, 2);
-      cost = 0;
       lossFn = str2func(this.Loss); % Loss function
-      cost = cost + lossFn(h, y); % Loss cost
+      this.Cost = this.Cost + lossFn(h, y); % Loss cost
       
       grad = [];
       L = length(this.Order);
@@ -126,7 +126,6 @@ classdef NeuralNetwork < handle
       fnD = str2func(strcat(this.Layers.(this.Order{L}).Function, 'D'));
       this.Layers.(this.Order{L}).delta = this.Layers.(this.Order{L}).delta .* fnD(this.Layers.(this.Order{L}).z); % Error due to weighted inputs
       for l = L-1:-1:2
-        l
         nextLayer = this.Layers.(this.Order{l+1});
         currLayer = this.Layers.(this.Order{l});
         currLayer.delta = currLayer.W' * nextLayer.delta; % Error from outputs
@@ -140,20 +139,16 @@ classdef NeuralNetwork < handle
         fnD = str2func(strcat(currLayer.Function, 'D'));
         currLayer.delta = currLayer.delta .* fnD(currLayer.z); % Error due to weighted inputs
         currLayer.dW = (1/m) * nextLayer.delta * currLayer.a'; % Weight derivative
-        %{
-        if isfield(net.layer(l+1), 'reg') && strcmp(net.layer(l+1).reg, 'L2')
-          net.layer(l).dW = net.layer(l).dW + net.lambda * net.layer(l).W; % L2 weight regularization derivative
+        if isprop(nextLayer, 'Reg') && strcmp(nextLayer.Reg, 'L2')
+          currLayer.dW = currLayer.dW + this.Lambda * currLayer.W; % L2 weight regularization derivative
         end
-        %}
         currLayer.db = (1/m) * sum(nextLayer.delta, 2); % Bias derivative
         grad = [currLayer.dW(:); currLayer.db; grad];
       end
       this.Layers.(this.Order{1}).dW = (1/m) * this.Layers.(this.Order{2}).delta * this.Layers.(this.Order{1}).a'; % Weight derivative
-      %{
-      if isfield(net.layer(2), 'reg') && strcmp(net.layer(2).reg, 'L2')
-        net.layer(1).dW = net.layer(1).dW + net.lambda * net.layer(1).W; % L2 weight regularization derivative
+      if isprop(this.Layers.(this.Order{2}), 'Reg') && strcmp(this.Layers.(this.Order{2}).Reg, 'L2')
+        this.Layers.(this.Order{1}).dW = this.Layers.(this.Order{1}).dW + this.Lambda * this.Layers.(this.Order{1}).W; % L2 weight regularization derivative
       end
-      %}
       this.Layers.(this.Order{1}).db = (1/m) * sum(this.Layers.(this.Order{2}).delta, 2); % Bias derivative
       grad = [this.Layers.(this.Order{1}).dW(:); this.Layers.(this.Order{1}).db(:); grad];
     end
