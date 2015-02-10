@@ -4,6 +4,13 @@ classdef Layer < dynamicprops
     Name % Unique name used for identification and connecting layers
     Function % Activation function
     Size % Input size
+    W % Weights
+    b % Biases
+    z % Weighted inputs
+    a % Activation
+    delta % Error
+    dW % Weight derivatives
+    db % Bias derivatives
     ConnectedTo = {} % Cell of outgoing edges
     ConnectedFrom = {} % Cell of incoming edges
     Mark = '' % Mark used in graphing algorithms

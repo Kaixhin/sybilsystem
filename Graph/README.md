@@ -21,6 +21,6 @@ nn.addLayer('d', struct('Function', 'sigmoid', 'Size', 126, 'Reg', 'L2'))
 nn.addLayer('b', struct('Function', 'softmax', 'Size', 10, 'Reg', 'L2'))
 nn.connect('a', 'b')
 nn.connect('d', 'b')
-nn.initialize()
+theta = nn.initialize();
 nn
 ```

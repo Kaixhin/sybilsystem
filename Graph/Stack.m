@@ -14,6 +14,7 @@ classdef Stack < handle
     function push(this, el)
       this.internal = [el this.internal];
     end
+    
     % Pop element from top of stack
     function el = pop(this)
       el = [];
@@ -22,6 +23,7 @@ classdef Stack < handle
         this.internal(1) = [];
       end
     end
+    
     % Peek at element at top of stack
     function el = peek(this)
       el = [];
