@@ -38,6 +38,7 @@ function [optTheta, cost] = gradientDescent(fn, theta, options)
     hold on
   end
   
+  % TODO Implement Sum of Functions Optimizer (Sohl-Dickstein)
   for n = 1:maxIter
     [cost, grad] = fn(theta);
     if strcmp(method, 'sgd') % Gradient descent with momentum
