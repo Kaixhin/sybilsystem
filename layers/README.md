@@ -3,6 +3,7 @@ Layers
 
 Layers apply element-wise (often non-linear) functions f(z) to the data z where z is a K dimensional vector.
 Several layers and their derivatives are provided.
+The derivatives take as input both z and f(z) as they are sometimes better expressed as functions of f(z).
 
 | Layer                       | Function                    |
 | --------------------------- | --------------------------- |
