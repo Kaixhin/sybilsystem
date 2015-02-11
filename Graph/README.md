@@ -12,6 +12,8 @@ Recurrent Neural Networks (RNNs) can be *unfolded* for a discrete number of time
 Recursive Neural Networks can therefore be seen as the generalised version of unfolded RNNs.
 
 To clarify this abstraction, a neural network is a graph, a layer is a node and a connection is an edge.
+A neural network can then be specified as a set of layers and a set of connections.
+This allows individual layers with constant or even learned parameters to be extracted and reused in another network.
 
 ## Usage
 ```Matlab
