@@ -136,7 +136,7 @@ classdef NeuralNetwork < handle
       end
       %}
       fnD = str2func(strcat(this.Layers.(this.Order{L}).Function, 'D'));
-      this.Layers.(this.Order{L}).delta = this.Layers.(this.Order{L}).delta .* fnD(this.Layers.(this.Order{L}).z); % Error due to weighted inputs
+      this.Layers.(this.Order{L}).delta = this.Layers.(this.Order{L}).delta .* fnD(this.Layers.(this.Order{L}).z, this.Layers.(this.Order{L}).a); % Error due to weighted inputs
       for l = L-1:-1:2
         nextLayer = this.Layers.(this.Order{l+1});
         currLayer = this.Layers.(this.Order{l});
@@ -149,7 +149,7 @@ classdef NeuralNetwork < handle
         end
         %}
         fnD = str2func(strcat(currLayer.Function, 'D'));
-        currLayer.delta = currLayer.delta .* fnD(currLayer.z); % Error due to weighted inputs
+        currLayer.delta = currLayer.delta .* fnD(currLayer.z, currLayer.a); % Error due to weighted inputs
         currLayer.dW = (1/m) * nextLayer.delta * currLayer.a'; % Weight derivative
         if isprop(nextLayer, 'Reg') && strcmp(nextLayer.Reg, 'L2')
           currLayer.dW = currLayer.dW + this.Lambda * currLayer.W; % L2 weight regularization derivative
