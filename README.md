@@ -6,8 +6,16 @@ A MATLAB library for prototyping deep neural networks (that can be trained using
 This work has been based on the [Unsupervised Feature Learning and Deep Learning Tutorial](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial) and utilises some of the helper functions provided.
 
 This library utilises the [minFunc optimization package](http://www.cs.ubc.ca/~schmidtm/Software/minFunc.html) by Mark Schmidt (2012), with its own licensing terms.
+The plan is to replace it with SGD variants.
 
-**WISHLIST**
+Why MATLAB?
+-----------
+
+MATLAB is designed and optimised for linear algebra.
+The aim is to make readable (but still documented) code for better understanding of the concepts involved.
+
+WISHLIST
+--------
 
 - Classification results
 - Batch accuracy
