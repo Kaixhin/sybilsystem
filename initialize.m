@@ -1,7 +1,6 @@
 % Initialize library
 clear
 addpath graph
-addpath minFunc
 addpath layers
 addpath losses
 addpath trainers
