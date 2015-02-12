@@ -19,4 +19,4 @@ y(y == 0) = 10; % Remap 0 to 10
 
 % Run network
 h = nn.forwardProp(X);
-[cost, grad] = nn.backProp(h, y);
+grad = nn.backProp(h, y);

@@ -75,7 +75,19 @@ classdef NeuralNetwork < handle
       end
     end
     
+    % Set weights and biases
     function setParams(this, theta)
+      prevWbLength = 0;
+      for l = 2:length(this.Order)
+        prevLayer = this.Layers.(this.Order{l-1});
+        currLayer = this.Layers.(this.Order{l});
+        WLength = currLayer.Size * prevLayer.Size;
+        bLength = currLayer.Size;
+        W = theta(1 + prevWbLength:prevWbLength + WLength); % Extract weights
+        prevLayer.W = reshape(W, [currLayer.Size prevLayer.Size]); % Set weights    
+        prevLayer.b = theta(1 + prevWbLength + WLength:prevWbLength + WLength + bLength); % Extract and set biases
+        prevWbLength = prevWbLength + WLength + bLength;
+      end
     end
     
     % Calculate network hypothesis
