@@ -1,4 +1,4 @@
-function rectD = reluD(z, a)
+function rectD = reluD(~, a)
   % RELUD Calculates the derivative of the half rectified function
   % z:      Input
   % a:      Half rectified input

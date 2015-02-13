@@ -1,4 +1,4 @@
-function tanhDv = tanhD(z, a)
+function tanhDv = tanhD(~, a)
   % TANHD Calculates the derivative of the tanh function
   % z:      Input
   % a:      Tanh of input

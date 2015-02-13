@@ -1,4 +1,4 @@
-function linD = linearD(z, a)
+function linD = linearD(z, ~)
   % LINEARD Calculates the derivative of the linear function
   % z:    Input
   % a:    Input

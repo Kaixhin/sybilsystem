@@ -1,4 +1,4 @@
-function sigmD = sigmoidD(z, a)
+function sigmD = sigmoidD(~, a)
   % SIGMOIDD Calculates the derivative of the sigmoid function
   % z:    Input
   % a:    Sigmoid of input

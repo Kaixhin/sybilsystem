@@ -1,4 +1,4 @@
-function softD = softmaxD(z, a)
+function softD = softmaxD(z, ~)
   % SOFTMAXD Calculates the derivative of the softmax function
   % z:      Input
   % a:      Softmax of input

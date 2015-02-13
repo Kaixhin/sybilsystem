@@ -13,7 +13,7 @@ The derivatives take as input both z and f(z) as they are sometimes better expre
 | Radial Basis                |                             | TODO
 | Rectified Linear            | max(0, z)                   |
 | Parametric Rectified Linear | max(0, z) + a\*min(0, z)    | TODO
-| Softplus                    |                             | TODO
+| Softplus                    | log(1 + e^z)                |
 | Maxout                      |                             | TODO
 | Softmax                     | e^z_j / sum(e^z_k)          |
 

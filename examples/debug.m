@@ -1,6 +1,6 @@
 % Simple network for debugging gradients
 nn = NeuralNetwork();
-nn.addLayer('input', struct('Function', 'relu', 'Size', 50))
+nn.addLayer('input', struct('Function', 'softplus', 'Size', 50))
 nn.addLayer('output', struct('Function', 'tanh', 'Size', 25))
 nn.connect('input', 'output')
 nn.Loss = 'squared'; % TODO Make loss layers
