@@ -10,11 +10,10 @@ The derivatives take as input both z and f(z) as they are sometimes better expre
 | Linear                      | z                           |
 | Sigmoid                     | 1 / (1 + e^-z)              |
 | Tanh                        | (e^z - e^-z) / (e^z + e^-z) |
-| Radial Basis                |                             | TODO
 | Rectified Linear            | max(0, z)                   |
 | Parametric Rectified Linear | max(0, z) + a\*min(0, z)    | TODO
 | Softplus                    | log(1 + e^z)                |
-| Maxout                      |                             | TODO
+| Maxout                      | max(z_j)                    | TODO
 | Softmax                     | e^z_j / sum(e^z_k)          |
 
 NB: tanh is inbuilt, but its derivative is not.
