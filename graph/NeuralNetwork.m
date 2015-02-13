@@ -5,7 +5,6 @@ classdef NeuralNetwork < handle
     Order = {}
     UnmarkedNodes = {} % Cell of unmarked nodes
     Loss = '' % TODO Accommodate losses anywhere
-    Cost = 0 % Cumulative cost from losses and regularization
     Lambda = 0 % TODO Specify L2 parameter by layer
   end
   methods (Static)
@@ -91,9 +90,9 @@ classdef NeuralNetwork < handle
     end
     
     % Calculate network hypothesis
-    function h = forwardProp(this, X)
+    function [h, varargout] = forwardProp(this, X, varargin)
       m = size(X, 2);
-      this.Cost = 0; % Reset cost
+      cost = 0;
       this.Layers.(this.Order{1}).a = X; % Input activation
       % TODO Don't assume first layer is input and everything is a unary tree
       for l = 2:length(this.Order)
@@ -103,7 +102,7 @@ classdef NeuralNetwork < handle
         fn = str2func(currLayer.Function); % Layer function
         currLayer.a = fn(currLayer.z); % Activation
         if isprop(currLayer, 'Reg') && strcmp(currLayer.Reg, 'L2')
-          this.Cost = this.Cost + (this.Lambda/2) * sum(sum(prevLayer.W.^2)); % L2 weight regularization cost
+          cost = cost + (this.Lambda/2) * sum(sum(prevLayer.W.^2)); % L2 weight regularization cost
         end
         %{
         if isfield(net.layer(l), 'rho') && isscalar(net.layer(l).rho)
@@ -116,13 +115,19 @@ classdef NeuralNetwork < handle
         %}
       end
       h = this.Layers.(this.Order{end}).a; % Hypothesis
+      % Calculate and return cost if y provided
+      if (nargin == 3)
+        lossFn = str2func(this.Loss); % Loss function
+        cost = cost + lossFn(h, varargin{1}); % Loss cost
+        varargout{1} = cost;
+      end
     end
     
     % Calculate cost and gradient given the target output
-    function grad = backProp(this, h, y)
-      m = size(h, 2);
-      lossFn = str2func(this.Loss); % Loss function
-      this.Cost = this.Cost + lossFn(h, y); % Loss cost
+    function [cost, grad] = backProp(this, X, y)
+      m = size(X, 2);
+      % Perform forward propagation
+      [h, cost] = this.forwardProp(X, y);
       
       grad = [];
       L = length(this.Order);

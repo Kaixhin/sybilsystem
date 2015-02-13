@@ -17,6 +17,9 @@ X = loadMNISTImages(['data' filesep 'train-images.idx3-ubyte']);
 y = loadMNISTLabels(['data' filesep 'train-labels.idx1-ubyte']);
 y(y == 0) = 10; % Remap 0 to 10
 
-% Run network
+% Run network forwards
 h = nn.forwardProp(X);
-grad = nn.backProp(h, y);
+% Run network forwards and backwards
+[cost, grad] = nn.backProp(X, y);
+
+% Train network
