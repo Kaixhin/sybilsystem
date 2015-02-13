@@ -1,4 +1,3 @@
-DEBUG = false;
 % Specify softmax classifier
 PATCH_SIZE = 28; % 28x28 image patches
 INPUT_SIZE = PATCH_SIZE * PATCH_SIZE;
@@ -21,20 +20,6 @@ XTest = loadMNISTImages(['data' filesep 't10k-images.idx3-ubyte']);
 yTest = loadMNISTLabels(['data' filesep 't10k-labels.idx1-ubyte']);
 y(y == 0) = 10; % Remap 0 to 10
 yTest(yTest == 0) = 10; % Remap 0 to 10
-
-% Check derivatives
-if DEBUG
-  fprintf('Checking gradient numerically\n');
-  [~, grad] = nn.backProp(X, y);
-  numgrad = computeNumGrad(@(p)nn.train(p, X, y), theta);
-  diff = norm(numgrad - grad)/norm(numgrad + grad);
-  if (diff >= 1e-7)
-    disp([grad numgrad]);
-    disp(diff);
-    fprintf('Norm of the difference between numerical and analytical gradient should be < 1e-7\n');
-    return
-  end
-end
 
 % Train network
 fprintf('Training network\n')
