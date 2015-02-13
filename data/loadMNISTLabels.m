@@ -16,4 +16,5 @@ assert(size(labels,1) == numLabels, 'Mismatch in label count');
 
 fclose(fp);
 
+labels = labels';
 end

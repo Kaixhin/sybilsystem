@@ -74,6 +74,16 @@ classdef NeuralNetwork < handle
       end
     end
     
+    % Get weights and biases
+    function theta = getParams(this)
+      theta = [];
+      % TODO Don't assume first layer is input and everything is a unary tree
+      for l = 2:length(this.Order)
+        prevLayer = this.Layers.(this.Order{l-1});
+        theta = [theta; prevLayer.W(:); prevLayer.b(:)];
+      end 
+    end
+    
     % Set weights and biases
     function setParams(this, theta)
       prevWbLength = 0;
@@ -115,7 +125,7 @@ classdef NeuralNetwork < handle
         %}
       end
       h = this.Layers.(this.Order{end}).a; % Hypothesis
-      % Calculate and return cost if y provided
+      % Calculate and return cost if target provided
       if (nargin == 3)
         lossFn = str2func(this.Loss); % Loss function
         cost = cost + lossFn(h, varargin{1}); % Loss cost
@@ -168,6 +178,12 @@ classdef NeuralNetwork < handle
       end
       this.Layers.(this.Order{1}).db = (1/m) * sum(this.Layers.(this.Order{2}).delta, 2); % Bias derivative
       grad = [this.Layers.(this.Order{1}).dW(:); this.Layers.(this.Order{1}).db(:); grad];
+    end
+    
+    % Convenience function for training
+    function [cost, grad] = train(this, theta, X, y)
+      this.setParams(theta);
+      [cost, grad] = this.backProp(X, y);
     end
   end
 end

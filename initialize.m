@@ -6,4 +6,5 @@ addpath losses
 addpath trainers
 addpath examples
 addpath data
+addpath utils
 DEBUG = false;

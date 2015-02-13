@@ -1,3 +1,4 @@
+DEBUG = false;
 % Specify softmax classifier
 PATCH_SIZE = 28; % 28x28 image patches
 INPUT_SIZE = PATCH_SIZE * PATCH_SIZE;
@@ -6,20 +7,44 @@ nn = NeuralNetwork();
 nn.addLayer('input', struct('Function', 'sigmoid', 'Size', INPUT_SIZE, 'Reg', 'L2'))
 nn.addLayer('output', struct('Function', 'softmax', 'Size', NUM_CLASSES, 'Reg', 'L2'))
 nn.connect('input', 'output')
-nn.Loss = 'logistic';
-nn.Lambda = 0; % Weight regularization parameter
+nn.Loss = 'logistic'; % TODO Make loss layers
+nn.Lambda = 1e-4; % Weight regularization parameter
 
 % Initialize network
+fprintf('Initializing network\n');
 theta = nn.initialize();
 
-% Inputs and outputs
+% Load training and test data
 X = loadMNISTImages(['data' filesep 'train-images.idx3-ubyte']);
 y = loadMNISTLabels(['data' filesep 'train-labels.idx1-ubyte']);
+XTest = loadMNISTImages(['data' filesep 't10k-images.idx3-ubyte']);
+yTest = loadMNISTLabels(['data' filesep 't10k-labels.idx1-ubyte']);
 y(y == 0) = 10; % Remap 0 to 10
+yTest(yTest == 0) = 10; % Remap 0 to 10
 
-% Run network forwards
-h = nn.forwardProp(X);
-% Run network forwards and backwards
-[cost, grad] = nn.backProp(X, y);
+% Check derivatives
+if DEBUG
+  fprintf('Checking gradient numerically\n');
+  [~, grad] = nn.backProp(X, y);
+  numgrad = computeNumGrad(@(p)nn.train(p, X, y), theta);
+  diff = norm(numgrad - grad)/norm(numgrad + grad);
+  if (diff >= 1e-7)
+    disp([grad numgrad]);
+    disp(diff);
+    fprintf('Norm of the difference between numerical and analytical gradient should be < 1e-7\n');
+    return
+  end
+end
 
 % Train network
+fprintf('Training network\n')
+options.display = true;
+[optTheta, cost] = gradientDescent(@(p)nn.train(p, X, y), theta, options);
+nn.setParams(optTheta);
+
+% Test network
+fprintf('Testing network\n')
+h = nn.forwardProp(XTest);
+[~, p] = max(h); % Get softmax predictions assuming labels start at 1
+acc = mean(yTest == p);
+fprintf('Accuracy: %0.3f%%\n', acc * 100);
