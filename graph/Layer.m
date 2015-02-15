@@ -1,3 +1,6 @@
+% A layer takes a set of inputs and returns a set of outputs on forward prop
+
+
 classdef Layer < dynamicprops
   %LAYER Neural network layer based on the vertex of a graph
   properties

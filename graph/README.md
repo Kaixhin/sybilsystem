@@ -1,8 +1,11 @@
 # Graph
 
+Each layer takes a set of input blobs and produces a set of output blobs.
+
+
 A neural network can be represented as a *flow graph*. Data flows through and is transformed by various processing units.
 Typically the data would undergo an affine transformation going through weighted edges and then be transformed into a different feature space by the nonlinear activation function at each neuron (node) it passes through.
-This library constrains networks such that each node is a layer rather than an individual neuron. Layers are not limited to typical activation functions either.
+This library constrains networks such that each node is a layer rather than an individual neuron. On the other hand layers are not limited to typical activation functions.
 Data then flows, i.e. forward propagates, through the network as a n x m matrix where n is the feature vector length and m is the number of samples.
 
 A feedforward neural network is represented by a *directed acyclic graph*, usually as simple as a *unary tree*.
