@@ -1,4 +1,16 @@
 % Specify softmax classifier
+s = struct('name', 'mnist', 'out', {'data' 'labels'}, 'source', 'MNIST')
+s.name
+'a'
+s.out
+'a'
+s.source
+'a'
+in = DataLayer(s);
+
+
+
+%{
 PATCH_SIZE = 28; % 28x28 image patches
 INPUT_SIZE = PATCH_SIZE * PATCH_SIZE;
 NUM_CLASSES = 10;
@@ -33,3 +45,4 @@ h = nn.forwardProp(XTest);
 [~, p] = max(h); % Get softmax predictions assuming labels start at 1
 acc = mean(yTest == p);
 fprintf('Accuracy: %0.3f%%\n', acc * 100);
+%}
