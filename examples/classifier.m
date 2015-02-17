@@ -1,12 +1,6 @@
 % Specify softmax classifier
-s = struct('name', 'mnist', 'out', {'data' 'labels'}, 'source', 'MNIST')
-s.name
-'a'
-s.out
-'a'
-s.source
-'a'
-in = DataLayer(s);
+s = loadjson('classifier.json')
+%in = DataLayer(s);
 
 
 

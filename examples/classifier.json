@@ -1,0 +1,17 @@
+{
+  "mnist": {
+    "type": "Data",
+    "out": ["data", "label"],
+    "source": "MNIST"
+  },
+  "pred": {
+    "type": "Softmax",
+    "in": ["data"],
+    "out": ["pred"]
+  },
+  "loss": {
+    "type": "LogisticLoss",
+    "in": ["pred", "label"],
+    "out": ["loss"]
+  }
+}

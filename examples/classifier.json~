@@ -1,0 +1,10 @@
+{
+  "mnist": {
+    "type": "Data",
+    "out": ["data", "label"],
+    "source": "MNIST"
+  },
+  "act": {
+    "type": "Sigmoid",
+    "in": 
+}

@@ -7,6 +7,11 @@ To get started run the initialize script.
 
 This work has been based on the [Unsupervised Feature Learning and Deep Learning Tutorial](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial) and utilises some of the helper functions provided.
 
+Dependencies
+------------
+
+- [JSONlab](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi?jsonlab) version 1.0 (included)
+
 Wishlist
 --------
 

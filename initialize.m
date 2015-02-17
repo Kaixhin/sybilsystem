@@ -1,5 +1,6 @@
 % Initialize library
 clear
+addpath jsonlab
 addpath graph
 addpath layers
 addpath losses
