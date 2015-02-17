@@ -1,6 +1,8 @@
 % Specify softmax classifier
-s = loadjson('classifier.json')
-%in = DataLayer(s);
+layers = loadjson('classifier.json')
+for l = 1:length(layers)
+  layers{l}
+end
 
 
 

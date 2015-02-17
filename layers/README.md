@@ -17,3 +17,10 @@ The derivatives take as input both z and f(z) as they are sometimes better expre
 | Softmax                     | e^z_j / sum(e^z_k)          |
 
 NB: tanh is inbuilt, but its derivative is not.
+
+Categories
+----------
+Vision includes Convolution, Pooling, Local Response Normalization
+Loss includes Squared, Logistic, Hinge
+Acivation includes Linear, Sigmoid, Tanh, Softplus, ReLU, PReLU*, Maxout*
+Others include Softmax
