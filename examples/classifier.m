@@ -1,9 +1,10 @@
 % Specify softmax classifier
-layers = loadjson('classifier.json')
+nn = NeuralNetwork();
+layers = loadjson('classifier.json');
 for l = 1:length(layers)
-  layers{l}
+  nn.addLayer(layers{l})
 end
-
+nn.Layers
 
 
 %{

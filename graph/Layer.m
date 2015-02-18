@@ -15,7 +15,7 @@ classdef Layer < dynamicprops
     %delta % Error
     %dW % Weight derivatives
     %db % Bias derivatives
-    Mark = '' % Mark used in graphing algorithms
+    %Mark = '' % Mark used in graphing algorithms
   end
   events
     Forward % Triggered on forward propagation
@@ -25,12 +25,16 @@ classdef Layer < dynamicprops
     % Constructor
     function this = Layer(spec)
       this.Name = spec.name;
-      if (isfield(spec, 'in'))
-        this.In = spec.in; % Set inputs
+      if (isfield(spec, 'in')) % Set inputs
+        for inp = 1:length(spec.in)
+          this.In.(spec.in{inp}) = struct('Size', 0);
+        end
       end
-      if (isfield(spec, 'out'))
-        this.Out = spec.out; % Set outputs
-      end      
+      if (isfield(spec, 'out')) % Set outputs
+        for out = 1:length(spec.out)
+          this.Out.(spec.out{out}) = struct('Size', 0);
+        end
+      end     
       %{
       this.Function = spec.Function;
       this.Size = spec.Size;

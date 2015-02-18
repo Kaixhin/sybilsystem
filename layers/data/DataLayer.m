@@ -1,21 +1,22 @@
 classdef DataLayer < Layer
   % DATALAYER Data input layer
   properties
-    Source % Source of data
+    Source = {} % Source of data
   end
   methods (Static)
     % Constructor
     function this = DataLayer(spec)
       this@Layer(spec);
+      this.Out.data
       if (strcmp(spec.source, 'MNIST'))
-        
+        this.Out{1}.a = loadMNISTImages(['data' filesep 'train-images.idx3-ubyte']);
       end
     end
   end
   methods
     % Forward propagation
     function [data, label] = forward(this)
-      data = loadMNISTImages(['data' filesep 'train-images.idx3-ubyte']);
+      data = 
       label = loadMNISTLabels(['data' filesep 'train-labels.idx1-ubyte']);
       forward@Layer(this);
     end
