@@ -1,6 +1,8 @@
 sybilsystem
 ===========
 
+**Construction on indefinite hiatus**
+
 A MATLAB library for prototyping deep neural networks (that can be trained using backpropagation), named for the eponymous "supercomputer".
 Developed for clear code, not speed.
 To get started run the initialize script.
